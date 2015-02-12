@@ -49,9 +49,8 @@ public class Weapon : Item
     {
         if (curCooldown == 0)
         {
-            GameObject bullet = GameObject.Instantiate(bulletPrefab) as GameObject;
+            GameObject bullet = Network.Instantiate(bulletPrefab, player.transform.position, new Quaternion(), 0) as GameObject;
             bullet.GetComponent<Bullet>().damage = damage;
-            bullet.transform.position = player.transform.position;
             bullet.rigidbody2D.velocity = player.aimVector * bulletSpeed;
             curCooldown = cooldown;
         }

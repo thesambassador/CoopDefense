@@ -12,6 +12,7 @@ GameObject:
   - 50: {fileID: 5080478}
   - 114: {fileID: 11480478}
   - 58: {fileID: 5802272}
+  - 148: {fileID: 14810272}
   m_Layer: 9
   m_Name: Bullet
   m_TagString: Untagged
@@ -70,6 +71,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   life: 180
   damage: 0
+--- !u!148 &14810272
+NetworkView:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 180478}
+  m_Enabled: 1
+  m_StateSynchronization: 1
+  m_Observed: {fileID: 11480478}
+  m_ViewID:
+    m_ID: 0
+    m_Type: 0
 --- !u!212 &21280478
 SpriteRenderer:
   m_ObjectHideFlags: 1

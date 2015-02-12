@@ -13,6 +13,7 @@ GameObject:
   - 61: {fileID: 6129706}
   - 114: {fileID: 11429704}
   - 50: {fileID: 5029706}
+  - 148: {fileID: 14844172}
   m_Layer: 10
   m_Name: EnemyGruntLunger
   m_TagString: Untagged
@@ -74,6 +75,8 @@ MonoBehaviour:
   BasicSpeed: 5
   DefaultState: MoveTowardsTarget
   OnLeaveSpawnerState: 
+  DamageOnContact: 1
+  meleeDamage: 1
   timer: 0
 --- !u!114 &11429706
 MonoBehaviour:
@@ -88,6 +91,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hp: 3
   _startColor: {r: 0, g: .544117689, b: .0487828292, a: 1}
+  SpriteRenderer: {fileID: 21229706}
+  DamageCooldown: 0
+--- !u!148 &14844172
+NetworkView:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 129706}
+  m_Enabled: 1
+  m_StateSynchronization: 1
+  m_Observed: {fileID: 11429704}
+  m_ViewID:
+    m_ID: 0
+    m_Type: 0
 --- !u!212 &21229706
 SpriteRenderer:
   m_ObjectHideFlags: 1

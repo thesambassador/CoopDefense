@@ -12,6 +12,10 @@ public class EnemyBase : StateEntity
 
     public string OnLeaveSpawnerState;
 
+    public bool DamageOnContact = true;
+    public int meleeDamage = 1;
+
+   
     protected override void InitBehavior()
     {
         base.InitBehavior();
@@ -72,6 +76,20 @@ public class EnemyBase : StateEntity
         if (Vector2.Distance(transform.position, CurrentTarget.transform.position) < .1)
         {
             SetState(OnLeaveSpawnerState);
+        }
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (networkView.isMine)
+        {
+            Damageable damagedObject = collision.gameObject.GetComponent<Damageable>();
+
+            if (damagedObject != null)
+            {
+                damagedObject.networkView.RPC("Damage", RPCMode.All, meleeDamage);
+            }
+
         }
     }
 

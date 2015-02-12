@@ -140,7 +140,7 @@ InputManager:
     negativeButton: 
     positiveButton: joystick 1 button 0
     altNegativeButton: 
-    altPositiveButton: 
+    altPositiveButton: e
     gravity: 0
     dead: .300000012
     sensitivity: 1
@@ -1243,6 +1243,38 @@ InputManager:
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: mouse 2
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 1000
+    dead: .00100000005
+    sensitivity: 1000
+    snap: 0
+    invert: 0
+    type: 0
+    axis: 0
+    joyNum: 0
+  - serializedVersion: 3
+    m_Name: KEY_START_1
+    descriptiveName: Keyboard for start
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: enter
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 1000
+    dead: .00100000005
+    sensitivity: 1000
+    snap: 0
+    invert: 0
+    type: 0
+    axis: 0
+    joyNum: 0
+  - serializedVersion: 3
+    m_Name: KEY_BACK_1
+    descriptiveName: Horizontal movement on keyboard
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: right shift
     altNegativeButton: 
     altPositiveButton: 
     gravity: 1000

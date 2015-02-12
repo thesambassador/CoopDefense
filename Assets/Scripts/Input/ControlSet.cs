@@ -31,6 +31,8 @@ public class ControlSet
         result.SHOOT1 = "MOUSE_LEFTCLICK";
         result.SHOOT2 = "MOUSE_RIGHTCLICK";
         result.MOUSEAIM = true;
+        result.START = "KEY_START";
+        result.BACK = "KEY_BACK";
 
         return result;
     }

@@ -29,16 +29,19 @@ public class EnemyGruntLunger : EnemyBase
     void StateMoveTowardsClosestPlayer()
     {
         CurrentTarget = LocateNearestPlayer();
-        Vector2 dir = CurrentTarget.transform.position - transform.position;
-        LookAtObject(CurrentTarget, .25f);
-        Vector2 moveVector = dir.normalized;
-        rigidbody2D.velocity = moveVector * walkSpeed;
-
-        if (Vector2.Distance(transform.position, CurrentTarget.transform.position) < lungeDist)
+        if (CurrentTarget)
         {
-            lungeLocation = CurrentTarget.transform.position;
-            SetState("LungePause");
-            timer = lungePause;
+            Vector2 dir = CurrentTarget.transform.position - transform.position;
+            LookAtObject(CurrentTarget, .25f);
+            Vector2 moveVector = dir.normalized;
+            rigidbody2D.velocity = moveVector*walkSpeed;
+
+            if (Vector2.Distance(transform.position, CurrentTarget.transform.position) < lungeDist)
+            {
+                lungeLocation = CurrentTarget.transform.position;
+                SetState("LungePause");
+                timer = lungePause;
+            }
         }
     }
 

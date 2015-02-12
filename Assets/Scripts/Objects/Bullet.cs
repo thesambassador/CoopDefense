@@ -14,25 +14,47 @@ public class Bullet : MonoBehaviour
 	void FixedUpdate()
 	{
 	    life --;
-	    if (life <= 0)
+	    if (life <= 0 && networkView.isMine)
 	    {
-	        Destroy(this.gameObject);
+            Network.RemoveRPCs(this.networkView.viewID);
+	        Network.Destroy(this.gameObject);
 	    }
         
 	}
 
+    void OnSerializeNetworkView(BitStream stream, NetworkMessageInfo messageInfo)
+    {
+        Vector3 syncVelocity = Vector3.zero;
+        if (stream.isWriting)
+        {
+            syncVelocity = rigidbody2D.velocity;
+            stream.Serialize(ref syncVelocity);
+        }
+        else
+        {
+            stream.Serialize(ref syncVelocity);
+
+            rigidbody2D.velocity = syncVelocity;
+
+        }
+    }
+
     void OnCollisionEnter2D(Collision2D collision)
     {
-
-        Damageable damagedObject = collision.gameObject.GetComponent<Damageable>();
-
-        if (damagedObject != null)
+        if (networkView.isMine)
         {
-            damagedObject.Damage(damage);
+            Damageable damagedObject = collision.gameObject.GetComponent<Damageable>();
+
+            if (damagedObject != null)
+            {
+                damagedObject.networkView.RPC("Damage", RPCMode.All, damage);
+            }
+
+            Network.RemoveRPCs(this.networkView.viewID);
+            Network.Destroy(this.gameObject);
+           
         }
 
-        Destroy(this.gameObject);
-        
     }
 
 }

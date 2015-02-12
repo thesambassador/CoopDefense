@@ -7,40 +7,59 @@ public class Damageable : MonoBehaviour
 
     public int hp;
 
-
     public Color _startColor = Color.white;
-    private SpriteRenderer _spriteRenderer;
+    public SpriteRenderer SpriteRenderer;
+
+    public float DamageCooldown = 5;
+
+    private float _damageCooldownTimer;
 
 
 	void Start()
 	{
-	    _spriteRenderer = this.GetComponent<SpriteRenderer>();
-	    _spriteRenderer.material.color = _startColor;
 
-
+        SpriteRenderer.material.color = _startColor;
 	}
 
 	void Update()
 	{
-
-        if (_spriteRenderer.material.color != _startColor)
+	    if (_damageCooldownTimer > 0)
 	    {
-	        renderer.material.color = Color.Lerp(renderer.material.color, _startColor, .1f);
+	        _damageCooldownTimer -= Time.deltaTime;
 	    }
-        
+
+        if (SpriteRenderer.material.color != _startColor)
+	    {
+            SpriteRenderer.material.color = Color.Lerp(SpriteRenderer.material.color, _startColor, .1f);
+	        SpriteRenderer.color = SpriteRenderer.material.color;
+	    }
 
 	    if (hp <= 0)
 	    {
-            Destroy(this.gameObject);
+	        if (Network.isServer)
+	        {
+                Network.RemoveRPCs(networkView.viewID);
+                Network.Destroy(this.gameObject);
+	        }
+	        else
+	        {
+	            this.collider2D.enabled = false;
+	            this.renderer.enabled = false;
+	        }
 	    }
 	}
 
+    [RPC]
     public void Damage(int damage)
     {
-        hp -= damage;
+        if (_damageCooldownTimer <= 0)
+        {
+            hp -= damage;
 
-        _spriteRenderer.material.color = Color.red;
-        Debug.Log(_spriteRenderer.material.color);
+            SpriteRenderer.material.color = Color.red;
+            Debug.Log(SpriteRenderer.material.color);
+            _damageCooldownTimer = DamageCooldown;
+        }
 
     }
 

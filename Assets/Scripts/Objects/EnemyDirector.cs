@@ -5,7 +5,8 @@ public class EnemyDirector : MonoBehaviour
 {
 
     public float spawnTime = 1;
-    public bool active = false;
+    public float spawnTimer = 0f;
+    public bool activated = false;
 
     List<SpawnDoor> spawnLocations;
 
@@ -19,28 +20,61 @@ public class EnemyDirector : MonoBehaviour
 
 	void Update()
 	{
-	    if (active)
+	    if (Network.isServer)
 	    {
-	        spawnTime -= Time.deltaTime;
+            if (activated)
+            {
+                spawnTimer -= Time.deltaTime;
 
-	        if (spawnTime <= 0)
+                if (spawnTimer <= 0)
+                {
+                    int spawnDoorIndex = Random.Range(0, spawnLocations.Count);
+                    Debug.Log(spawnDoorIndex);
+                    SpawnDoor door = spawnLocations[spawnDoorIndex];
+
+                    SpawnEnemy(door, enemyPrefab);
+                    spawnTimer = spawnTime;
+
+                    if(spawnTime > 1)
+                        spawnTime -= .1f;
+                }
+
+            }
+
+	        if (Input.GetKeyDown(KeyCode.K))
 	        {
-	            int spawnDoorIndex = Random.Range(0, spawnLocations.Count);
-	            Debug.Log(spawnDoorIndex);
-	            SpawnDoor door = spawnLocations[spawnDoorIndex];
-
-	            door.SpawnEnemy(enemyPrefab);
-	            spawnTime = 2;
+	            this.activated = true;
 	        }
-	    }
-	    else
-	    {
-	        if (InputHandler.GetPlayerButton(ControlSet.DefaultControlSet().BACK, 1))
-	        {
-	            active = true;
-	        }
-	    }
 
+	    }
 	}
+
+    void SpawnEnemyRandom()
+    {
+        int spawnDoorIndex = Random.Range(0, spawnLocations.Count);
+        SpawnDoor door = spawnLocations[spawnDoorIndex];
+        SpawnEnemy(door, enemyPrefab);
+    }
+
+    void SpawnEnemy(SpawnDoor door, GameObject enemyPrefab)
+    {
+
+        Vector3 spawnPosition = door.transform.position;
+        spawnPosition.y += door.SpawnOffset.y;
+        spawnPosition.x += door.SpawnOffset.x;
+        spawnPosition.z -= 1;
+
+        GameObject result = Network.Instantiate(enemyPrefab, spawnPosition, this.transform.rotation, 0) as GameObject;
+
+        //Now set the enemy's state to leave the spawn, and set their target location
+        EnemyBase enemyBehavior = result.GetComponent<EnemyBase>();
+        enemyBehavior.CurrentTarget = door.SpawnLeave;
+    
+    }
+
+    void Activate()
+    {
+        activated = true;
+    }
 
 }
